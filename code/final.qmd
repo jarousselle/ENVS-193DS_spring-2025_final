@@ -9,6 +9,25 @@ format:
 
 <https://github.com/jarousselle/ENVS-193DS_spring-2025_final>
 
+# Setup
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
 # Problem 4 Affective and exploratory visualizations
 
-### a.
+### a.Transparent statistical methods
+
+In part 1, they used a linear regression. In part 2, they used an ANOVA test.
+
+### b. More information needed
+
+My co-worker should also include the results of a Tukey HSD test because this will explain which particular groups are actually different. In addition, they should also include the results of $\eta^2$ test to show the effect size, or the proportion of variation in the response that is explained by the predictor variable. 
+
+### c. Suggestions for rewriting
+
