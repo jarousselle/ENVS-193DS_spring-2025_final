@@ -27,7 +27,10 @@ In part 1, they used a linear regression. In part 2, they used an ANOVA test.
 
 ### b. More information needed
 
-My co-worker should also include the results of a Tukey HSD test because this will explain which particular groups are actually different. In addition, they should also include the results of $\eta^2$ test to show the effect size, or the proportion of variation in the response that is explained by the predictor variable. 
+My co-worker should also include the results of a Tukey HSD test because this will explain which particular groups are actually different. In addition, they should also include the results of $\eta^2$ test to show the effect size, or the proportion of variation in the response that is explained by the predictor variable.
 
 ### c. Suggestions for rewriting
 
+part 1: The annual total nitrogen load (increased/decreased) as distance from headwater increased (linear regression, F~Degrees of Freedom~ = test statistic, R^2^ = model fit, p = 0.03).
+
+part 2: We found a (large/medium/small) difference ($\eta^2$ = effect size) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) in mean nitrogen load (kg year-1) (one-way ANOVA, F(degrees of freedom) = test statistic, p = 0.02, $\alpha$ = significance level). On average, (source type) tended to have (higher/lower) nitrogen load than (source type) (results from Tukey HSD: average difference in nitrogen load, 95% CI)...(more comparisons between groups can be added based off of Tukey HSD test.)
