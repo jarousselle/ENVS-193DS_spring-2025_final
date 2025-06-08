@@ -1,0 +1,14 @@
+---
+title: "ENVS 193DS Homework 3"
+author: "Jess Rousselle"
+date: 2025-05-30
+format:
+  html:
+    toc: true # use this to display a table of contents
+---
+
+<https://github.com/jarousselle/ENVS-193DS_spring-2025_final>
+
+# Problem 4 Affective and exploratory visualizations
+
+### a.
