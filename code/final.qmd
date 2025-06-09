@@ -17,6 +17,7 @@ format:
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+sst <- read.csv("data/SST_update2023.csv")
 ```
 
 # Problem 4 Affective and exploratory visualizations
@@ -34,3 +35,15 @@ My co-worker should also include the results of a Tukey HSD test because this wi
 part 1: The annual total nitrogen load (increased/decreased) as distance from headwater increased (linear regression, F~Degrees of Freedom~ = test statistic, R^2^ = model fit, p = 0.03).
 
 part 2: We found a (large/medium/small) difference ($\eta^2$ = effect size) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) in mean nitrogen load (kg year-1) (one-way ANOVA, F(degrees of freedom) = test statistic, p = 0.02, $\alpha$ = significance level). On average, (source type) tended to have (higher/lower) nitrogen load than (source type) (results from Tukey HSD: average difference in nitrogen load, 95% CI)...(more comparisons between groups can be added based off of Tukey HSD test.)
+
+# Problem 2. Data visualization
+
+```{r}
+sst_clean <- sst |> 
+  mutate(year = year(date)) |> 
+ mutate(month = month(date, label = TRUE)) |> 
+   group_by(month, year) |> 
+   summarise(sst_clean, mean_monthly_sst = mean(temp))
+  
+```
+
