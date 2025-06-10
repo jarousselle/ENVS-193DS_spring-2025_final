@@ -1,5 +1,5 @@
 ---
-title: "ENVS 193DS Homework 3"
+title: "ENVS 193DS Final"
 author: "Jess Rousselle"
 date: 2025-05-30
 format:
@@ -14,6 +14,7 @@ format:
 ```{r}
 #| message: false
 #| warning: false
+setwd("/Users/jessrousselle/Desktop/github/ENVS-193DS_spring-2025_final")
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
@@ -21,7 +22,7 @@ library(janitor)
 sst <- read.csv("data/SST_update2023.csv")
 ```
 
-# Problem 4 Affective and exploratory visualizations
+# Problem 1. Research writing
 
 ### a.Transparent statistical methods
 
@@ -54,6 +55,8 @@ str(sst_clean)
 ### b. Visualize the data
 
 ```{r}
+#| message: false
+#| warning: false
 ggplot(sst_clean, aes(x = month,
                       y = mean_monthly_sst,
                       group = year,
@@ -65,10 +68,12 @@ ggplot(sst_clean, aes(x = month,
         panel.background = element_blank(), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
-        legend.position = c(0.1, 0.8)) +
+        legend.position = c(0.1, 0.75)) +
   labs(x = "Month",
        y = "Mean monthly sea surface temperature (°C)",
        color = "Year")
 ```
 
+# Problem 3. Data analysis
 
+### a. Response variable
