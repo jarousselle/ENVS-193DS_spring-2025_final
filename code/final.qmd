@@ -20,6 +20,7 @@ library(dplyr)
 library(ggplot2)
 library(janitor)
 sst <- read.csv("data/SST_update2023.csv")
+nest_boxes <- read.csv("data/occdist.csv")
 ```
 
 # Problem 1. Research writing
@@ -75,5 +76,14 @@ ggplot(sst_clean, aes(x = month,
 ```
 
 # Problem 3. Data analysis
+```{r}
+nest_boxes
+```
+
 
 ### a. Response variable
+For each category of bird, a 1 represents that the nest box is occupied by that type of bird and the 0 represents that it is not occupied by that type of bird or is empty.
+
+### b. Purpose of study
+Swift Parrots are a critically endangered species, wheras Common Starlings and Tree Martins are competitors of Swift Parrots. This study focuses on the effectiveness of nest boxes in restoring Swift Parrot populations while taking into account competitors.
+
