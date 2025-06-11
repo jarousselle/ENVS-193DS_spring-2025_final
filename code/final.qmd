@@ -19,6 +19,8 @@ library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(janitor)
+library(MuMIn)
+library(ggeffects)
 sst <- read.csv("data/SST_update2023.csv")
 nest_boxes <- read.csv("data/occdist.csv")
 ```
@@ -103,3 +105,15 @@ The study compares two different breeding seasons for Swift Parrots, one in 2016
 | 1 | x | x | all predictors (saturated model) |
 | 2 | x |  | season |
 | 3 |  | x | distance to forest edge |
+
+### e.
+
+```{r}
+model0 <- lm(sp ~ 1, data = nest_boxes)
+model1 <- lm(sp ~ edge.distance + season, 
+             data = nest_boxes)
+model2 <- lm(sp ~ season,
+             data = nest_boxes)
+model3 <- lm(sp ~ edge.distance,
+             data = nest_boxes)
+```
