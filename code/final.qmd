@@ -40,7 +40,9 @@ part 1: The annual total nitrogen load (increased/decreased) as distance from he
 part 2: We found a (large/medium/small) difference ($\eta^2$ = effect size) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) in mean nitrogen load (kg year-1) (one-way ANOVA, F(degrees of freedom) = test statistic, p = 0.02, $\alpha$ = significance level). On average, (source type) tended to have (higher/lower) nitrogen load than (source type) (results from Tukey HSD: average difference in nitrogen load, 95% CI)...(more comparisons between groups can be added based off of Tukey HSD test.)
 
 # Problem 2. Data visualization
+
 ### a. Cleaning and summarizing
+
 ```{r}
 sst_clean <- sst |> 
   mutate(year = year(date)) |> 
@@ -76,20 +78,28 @@ ggplot(sst_clean, aes(x = month,
 ```
 
 # Problem 3. Data analysis
+
 ```{r}
 nest_boxes
 ```
 
-
 ### a. Response variable
-For each category of bird, a 1 represents that the nest box is occupied by that type of bird and the 0 represents that it is not occupied by that type of bird or is empty.
+
+For each category of bird, a 1 represents that the nest box is occupied by that type of bird and the 0 represents that it is not occupied by that type of bird or is empty. The response variables include, Swift Parrot, Common Starling, and Tree Martin.
 
 ### b. Purpose of study
+
 Swift Parrots are a critically endangered species, wheras Common Starlings and Tree Martins are competitors of Swift Parrots. This study focuses on the effectiveness of nest boxes in restoring Swift Parrot populations while taking into account competitors.
 
 ### c. Difference in "seasons"
+
 The study compares two different breeding seasons for Swift Parrots, one in 2016 and one in 2019. The summer of 2016 was the first year that the parrots breed at the study site and the summer of 2019 was when parrots returned to breed at the study site again after a period of absence.
 
 ### d. Table of model
 
-
+| model number | season | distance to forest edge | model description |
+|----|----|----|----|
+| 0 |  |  | no predictors (null model) |
+| 1 | x | x | all predictors (saturated model) |
+| 2 | x |  | season |
+| 3 |  | x | distance to forest edge |
