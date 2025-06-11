@@ -102,7 +102,7 @@ The study compares two different breeding seasons for Swift Parrots, one in 2016
 | 2 | x |  | season |
 | 3 |  | x | distance to forest edge |
 
-### e.
+### e. Run the models
 
 ```{r}
 model0 <- lm(sp ~ 1, data = nest_boxes)
@@ -114,7 +114,7 @@ model3 <- lm(sp ~ edge.distance,
              data = nest_boxes)
 ```
 
-### f. 
+### f. Check the diagnostics
 ```{r}
 par(mfrow = c(1,1))
 plot(model1)
@@ -122,7 +122,7 @@ plot(model2)
 plot(model3)
 ```
 
-### e.
+### e. Select the best model
 ```{r}
 AICc(model1,
      model2,
@@ -132,4 +132,14 @@ summary(model1)
 ```
 
 The best model that predicts Swift Parrot presence in nest boxes as determined by Akaike's Information Criterion (AIC) includes season and distance to the forest edge (F(2, 224) = 8.5, p < 0.001, $\alpha$ = 0.05)
+
+### h. Visualize the model predictions
+
+```{r}
+ggpredict(model1,
+          terms = c("season",
+                    "edge.distance")) |> 
+  plot(show_data = TRUE)
+```
+
 
