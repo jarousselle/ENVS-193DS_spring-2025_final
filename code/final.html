@@ -125,6 +125,10 @@ window.Quarto = {
   <li><a href="#problem-3.-data-analysis" id="toc-problem-3.-data-analysis" class="nav-link" data-scroll-target="#problem-3.-data-analysis">Problem 3. Data analysis</a>
   <ul class="collapse">
   <li><a href="#a.-response-variable" id="toc-a.-response-variable" class="nav-link" data-scroll-target="#a.-response-variable">a. Response variable</a></li>
+  <li><a href="#b.-purpose-of-study" id="toc-b.-purpose-of-study" class="nav-link" data-scroll-target="#b.-purpose-of-study">b. Purpose of study</a></li>
+  <li><a href="#c.-difference-in-seasons" id="toc-c.-difference-in-seasons" class="nav-link" data-scroll-target="#c.-difference-in-seasons">c.&nbsp;Difference in “seasons”</a></li>
+  <li><a href="#d.-table-of-model" id="toc-d.-table-of-model" class="nav-link" data-scroll-target="#d.-table-of-model">d.&nbsp;Table of model</a></li>
+  <li><a href="#e." id="toc-e." class="nav-link" data-scroll-target="#e.">e.</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -171,8 +175,10 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/SST_update2023.csv"</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>nest_boxes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/occdist.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/SST_update2023.csv"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>nest_boxes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/occdist.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="problem-1.-research-writing" class="level1">
@@ -206,11 +212,11 @@ window.Quarto = {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(sst_clean, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  year month mean_monthly_sst
-1 2018   Nov         17.88374
-2 2019   May         14.27406
-3 2021   Jul         17.64986
-4 2021   Jun         15.93512
-5 2023   Jun         15.97853</code></pre>
+1 2022   May         13.39061
+2 2022   Apr         13.31128
+3 2023   Nov         16.80698
+4 2019   Mar         13.57068
+5 2020   May         14.56930</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -714,6 +720,66 @@ window.Quarto = {
 </div>
 <section id="a.-response-variable" class="level3">
 <h3 class="anchored" data-anchor-id="a.-response-variable">a. Response variable</h3>
+<p>For each category of bird, a 1 represents that the nest box is occupied by that type of bird and the 0 represents that it is not occupied by that type of bird or is empty. The response variables include, Swift Parrot, Common Starling, and Tree Martin.</p>
+</section>
+<section id="b.-purpose-of-study" class="level3">
+<h3 class="anchored" data-anchor-id="b.-purpose-of-study">b. Purpose of study</h3>
+<p>Swift Parrots are a critically endangered species, wheras Common Starlings and Tree Martins are competitors of Swift Parrots. This study focuses on the effectiveness of nest boxes in restoring Swift Parrot populations while taking into account competitors.</p>
+</section>
+<section id="c.-difference-in-seasons" class="level3">
+<h3 class="anchored" data-anchor-id="c.-difference-in-seasons">c.&nbsp;Difference in “seasons”</h3>
+<p>The study compares two different breeding seasons for Swift Parrots, one in 2016 and one in 2019. The summer of 2016 was the first year that the parrots breed at the study site and the summer of 2019 was when parrots returned to breed at the study site again after a period of absence.</p>
+</section>
+<section id="d.-table-of-model" class="level3">
+<h3 class="anchored" data-anchor-id="d.-table-of-model">d.&nbsp;Table of model</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>model number</th>
+<th>season</th>
+<th>distance to forest edge</th>
+<th>model description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td></td>
+<td></td>
+<td>no predictors (null model)</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>x</td>
+<td>x</td>
+<td>all predictors (saturated model)</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>x</td>
+<td></td>
+<td>season</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td></td>
+<td>x</td>
+<td>distance to forest edge</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="e." class="level3">
+<h3 class="anchored" data-anchor-id="e.">e.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> nest_boxes)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge.distance <span class="sc">+</span> season, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> season,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge.distance,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
 
