@@ -128,7 +128,10 @@ window.Quarto = {
   <li><a href="#b.-purpose-of-study" id="toc-b.-purpose-of-study" class="nav-link" data-scroll-target="#b.-purpose-of-study">b. Purpose of study</a></li>
   <li><a href="#c.-difference-in-seasons" id="toc-c.-difference-in-seasons" class="nav-link" data-scroll-target="#c.-difference-in-seasons">c.&nbsp;Difference in “seasons”</a></li>
   <li><a href="#d.-table-of-model" id="toc-d.-table-of-model" class="nav-link" data-scroll-target="#d.-table-of-model">d.&nbsp;Table of model</a></li>
-  <li><a href="#e." id="toc-e." class="nav-link" data-scroll-target="#e.">e.</a></li>
+  <li><a href="#e.-run-the-models" id="toc-e.-run-the-models" class="nav-link" data-scroll-target="#e.-run-the-models">e. Run the models</a></li>
+  <li><a href="#f.-check-the-diagnostics" id="toc-f.-check-the-diagnostics" class="nav-link" data-scroll-target="#f.-check-the-diagnostics">f.&nbsp;Check the diagnostics</a></li>
+  <li><a href="#g.-select-the-best-model" id="toc-g.-select-the-best-model" class="nav-link" data-scroll-target="#g.-select-the-best-model">g. Select the best model</a></li>
+  <li><a href="#h.-visualize-the-model-predictions" id="toc-h.-visualize-the-model-predictions" class="nav-link" data-scroll-target="#h.-visualize-the-model-predictions">h. Visualize the model predictions</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -213,10 +216,10 @@ window.Quarto = {
 <div class="cell-output cell-output-stdout">
 <pre><code>  year month mean_monthly_sst
 1 2022   May         13.39061
-2 2022   Apr         13.31128
-3 2023   Nov         16.80698
-4 2019   Mar         13.57068
-5 2020   May         14.56930</code></pre>
+2 2019   Jun         15.78730
+3 2022   Jan         13.90720
+4 2022   Jul         16.96499
+5 2020   Apr         14.32102</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -257,467 +260,6 @@ window.Quarto = {
 </section>
 <section id="problem-3.-data-analysis" class="level1">
 <h1>Problem 3. Data analysis</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nest_boxes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         box    box.occupant edge.distance season      eventID repeated.use sp
-1    boxrh00 common starling           287   2016  boxrh002016           no  0
-2    boxrh49 common starling            35   2016  boxrh492016           no  0
-3    boxrh55 common starling            84   2016  boxrh552016           no  0
-4    boxrh56 common starling           128   2016  boxrh562016           no  0
-5    boxrh58 common starling           152   2016  boxrh582016           no  0
-6    boxrh62 common starling            92   2016  boxrh622016           no  0
-7    boxrh72 common starling            51   2016  boxrh722016           no  0
-8   boxrh100 common starling           222   2019 boxrh1002019           no  0
-9   boxrh102 common starling           160   2019 boxrh1022019           no  0
-10  boxrh103 common starling           145   2019 boxrh1032019           no  0
-11  boxrh106 common starling           289   2019 boxrh1062019           no  0
-12  boxrh107 common starling           406   2019 boxrh1072019           no  0
-13  boxrh108 common starling           416   2019 boxrh1082019           no  0
-14  boxrh110 common starling           409   2019 boxrh1102019           no  0
-15   boxrh11 common starling           677   2019  boxrh112019           no  0
-16  boxrh112 common starling           362   2019 boxrh1122019           no  0
-17  boxrh114 common starling           373   2019 boxrh1142019           no  0
-18  boxrh115 common starling           336   2019 boxrh1152019           no  0
-19  boxrh117 common starling           296   2019 boxrh1172019           no  0
-20  boxrh118 common starling           470   2019 boxrh1182019           no  0
-21  boxrh119 common starling           355   2019 boxrh1192019           no  0
-22  boxrh121 common starling           383   2019 boxrh1212019           no  0
-23  boxrh122 common starling           357   2019 boxrh1222019           no  0
-24  boxrh124 common starling           453   2019 boxrh1242019           no  0
-25  boxrh125 common starling           461   2019 boxrh1252019           no  0
-26  boxrh127 common starling           604   2019 boxrh1272019           no  0
-27   boxrh13 common starling           663   2019  boxrh132019           no  0
-28  boxrh132 common starling           220   2019 boxrh1322019           no  0
-29  boxrh134 common starling           277   2019 boxrh1342019           no  0
-30  boxrh136 common starling           278   2019 boxrh1362019           no  0
-31   boxrh49 common starling            35   2019  boxrh492019           no  0
-32   boxrh50 common starling            14   2019  boxrh502019           no  0
-33   boxrh52 common starling            16   2019  boxrh522019           no  0
-34   boxrh55 common starling            84   2019  boxrh552019           no  0
-35   boxrh56 common starling           128   2019  boxrh562019           no  0
-36   boxrh57 common starling           100   2019  boxrh572019           no  0
-37   boxrh58 common starling           152   2019  boxrh582019           no  0
-38   boxrh61 common starling           135   2019  boxrh612019           no  0
-39   boxrh69 common starling           115   2019  boxrh692019           no  0
-40   boxrh70 common starling           135   2019  boxrh702019           no  0
-41   boxrh80 common starling            71   2019  boxrh802019           no  0
-42   boxrh81 common starling           334   2019  boxrh812019           no  0
-43   boxrh82 common starling           190   2019  boxrh822019           no  0
-44   boxrh85 common starling           260   2019  boxrh852019           no  0
-45   boxrh86 common starling           270   2019  boxrh862019           no  0
-46   boxrh87 common starling           228   2019  boxrh872019           no  0
-47   boxrh88 common starling           282   2019  boxrh882019           no  0
-48   boxrh89 common starling           187   2019  boxrh892019           no  0
-49   boxrh90 common starling            80   2019  boxrh902019           no  0
-50   boxrh93 common starling            40   2019  boxrh932019           no  0
-51   boxrh94 common starling            30   2019  boxrh942019           no  0
-52   boxrh95 common starling           114   2019  boxrh952019           no  0
-53   boxrh98 common starling           167   2019  boxrh982019           no  0
-54   boxrh99 common starling           170   2019  boxrh992019           no  0
-55  boxrh109 common starling           435   2019 boxrh1092019          yes  0
-56  boxrh113 common starling           392   2019 boxrh1132019          yes  0
-57  boxrh116 common starling           309   2019 boxrh1162019          yes  0
-58  boxrh128 common starling           544   2019 boxrh1282019          yes  0
-59  boxrh129 common starling           577   2019 boxrh1292019          yes  0
-60   boxrh17 common starling           695   2019  boxrh172019          yes  0
-61   boxrh51 common starling            14   2019  boxrh512019          yes  0
-62   boxrh53 common starling             7   2019  boxrh532019          yes  0
-63   boxrh54 common starling            66   2019  boxrh542019          yes  0
-64   boxrh77 common starling            89   2019  boxrh772019          yes  0
-65   boxrh91 common starling           141   2019  boxrh912019          yes  0
-66   boxrh97 common starling           118   2019  boxrh972019          yes  0
-67   boxrh01           empty           820   2016  boxrh012016           no  0
-68   boxrh08           empty           762   2016  boxrh082016           no  0
-69   boxrh11           empty           677   2016  boxrh112016           no  0
-70   boxrh12           empty           697   2016  boxrh122016           no  0
-71   boxrh15           empty           688   2016  boxrh152016           no  0
-72   boxrh29           empty           705   2016  boxrh292016           no  0
-73   boxrh30           empty           671   2016  boxrh302016           no  0
-74   boxrh32           empty           735   2016  boxrh322016           no  0
-75   boxrh34           empty           732   2016  boxrh342016           no  0
-76   boxrh36           empty           778   2016  boxrh362016           no  0
-77   boxrh38           empty           777   2016  boxrh382016           no  0
-78   boxrh30           empty           671   2019  boxrh302019           no  0
-79   boxrh05    swift parrot           715   2016  boxrh052016           no  1
-80   boxrh09    swift parrot           735   2016  boxrh092016           no  1
-81  boxrh103    swift parrot           145   2016 boxrh1032016           no  1
-82  boxrh105    swift parrot           105   2016 boxrh1052016           no  1
-83  boxrh108    swift parrot           416   2016 boxrh1082016           no  1
-84  boxrh109    swift parrot           435   2016 boxrh1092016           no  1
-85  boxrh111    swift parrot           355   2016 boxrh1112016           no  1
-86  boxrh113    swift parrot           392   2016 boxrh1132016           no  1
-87  boxrh117    swift parrot           296   2016 boxrh1172016           no  1
-88  boxrh119    swift parrot           355   2016 boxrh1192016           no  1
-89  boxrh126    swift parrot           476   2016 boxrh1262016           no  1
-90  boxrh133    swift parrot           259   2016 boxrh1332016           no  1
-91  boxrh134    swift parrot           277   2016 boxrh1342016           no  1
-92  boxrh136    swift parrot           278   2016 boxrh1362016           no  1
-93  boxrh137    swift parrot           183   2016 boxrh1372016           no  1
-94  boxrh138    swift parrot           218   2016 boxrh1382016           no  1
-95   boxrh17    swift parrot           695   2016  boxrh172016           no  1
-96   boxrh33    swift parrot           745   2016  boxrh332016           no  1
-97   boxrh47    swift parrot            48   2016  boxrh472016           no  1
-98   boxrh68    swift parrot           122   2016  boxrh682016           no  1
-99   boxrh80    swift parrot            71   2016  boxrh802016           no  1
-100  boxrh82    swift parrot           190   2016  boxrh822016           no  1
-101  boxrh83    swift parrot           253   2016  boxrh832016           no  1
-102  boxrh86    swift parrot           270   2016  boxrh862016           no  1
-103  boxrh87    swift parrot           228   2016  boxrh872016           no  1
-104  boxrh88    swift parrot           282   2016  boxrh882016           no  1
-105  boxrh92    swift parrot           115   2016  boxrh922016           no  1
-106  boxrh95    swift parrot           114   2016  boxrh952016           no  1
-107  boxrh98    swift parrot           167   2016  boxrh982016           no  1
-108  boxrh03    swift parrot           774   2019  boxrh032019           no  1
-109  boxrh05    swift parrot           715   2019  boxrh052019           no  1
-110  boxrh06    swift parrot           749   2019  boxrh062019           no  1
-111 boxrh101    swift parrot            97   2019 boxrh1012019           no  1
-112 boxrh104    swift parrot           130   2019 boxrh1042019           no  1
-113 boxrh105    swift parrot           105   2019 boxrh1052019           no  1
-114 boxrh130    swift parrot           529   2019 boxrh1302019           no  1
-115  boxrh20    swift parrot           794   2019  boxrh202019           no  1
-116  boxrh48    swift parrot            29   2019  boxrh482019           no  1
-117  boxrh83    swift parrot           253   2019  boxrh832019           no  1
-118  boxrh84    swift parrot           370   2019  boxrh842019           no  1
-119 boxrh109    swift parrot           435   2019 boxrh1092019          yes  1
-120 boxrh113    swift parrot           392   2019 boxrh1132019          yes  1
-121 boxrh116    swift parrot           309   2019 boxrh1162019          yes  1
-122 boxrh135    swift parrot           250   2019 boxrh1352019          yes  1
-123  boxrh42    swift parrot           731   2019  boxrh422019          yes  1
-124  boxrh51    swift parrot            14   2019  boxrh512019          yes  1
-125  boxrh53    swift parrot             7   2019  boxrh532019          yes  1
-126  boxrh91    swift parrot           141   2019  boxrh912019          yes  1
-127  boxrh97    swift parrot           118   2019  boxrh972019          yes  1
-128  boxrh00     tree martin            35   2016  boxrh002016           no  0
-129  boxrh00     tree martin           287   2016  boxrh002016           no  0
-130  boxrh02     tree martin           866   2016  boxrh022016           no  0
-131  boxrh03     tree martin           774   2016  boxrh032016           no  0
-132  boxrh04     tree martin           808   2016  boxrh042016           no  0
-133  boxrh06     tree martin           749   2016  boxrh062016           no  0
-134  boxrh07     tree martin           779   2016  boxrh072016           no  0
-135  boxrh10     tree martin           730   2016  boxrh102016           no  0
-136 boxrh107     tree martin           406   2016 boxrh1072016           no  0
-137 boxrh110     tree martin           409   2016 boxrh1102016           no  0
-138 boxrh112     tree martin           362   2016 boxrh1122016           no  0
-139 boxrh114     tree martin           373   2016 boxrh1142016           no  0
-140 boxrh115     tree martin           336   2016 boxrh1152016           no  0
-141 boxrh116     tree martin           309   2016 boxrh1162016           no  0
-142 boxrh120     tree martin           377   2016 boxrh1202016           no  0
-143 boxrh121     tree martin           383   2016 boxrh1212016           no  0
-144 boxrh122     tree martin           357   2016 boxrh1222016           no  0
-145 boxrh123     tree martin           408   2016 boxrh1232016           no  0
-146 boxrh124     tree martin           453   2016 boxrh1242016           no  0
-147 boxrh125     tree martin           461   2016 boxrh1252016           no  0
-148 boxrh128     tree martin           544   2016 boxrh1282016           no  0
-149 boxrh129     tree martin           577   2016 boxrh1292016           no  0
-150 boxrh130     tree martin           529   2016 boxrh1302016           no  0
-151  boxrh13     tree martin           663   2016  boxrh132016           no  0
-152  boxrh14     tree martin           806   2016  boxrh142016           no  0
-153  boxrh16     tree martin           782   2016  boxrh162016           no  0
-154  boxrh18     tree martin           695   2016  boxrh182016           no  0
-155  boxrh19     tree martin           771   2016  boxrh192016           no  0
-156  boxrh20     tree martin           794   2016  boxrh202016           no  0
-157  boxrh21     tree martin           841   2016  boxrh212016           no  0
-158  boxrh23     tree martin           802   2016  boxrh232016           no  0
-159  boxrh24     tree martin           839   2016  boxrh242016           no  0
-160  boxrh25     tree martin           825   2016  boxrh252016           no  0
-161  boxrh26     tree martin           743   2016  boxrh262016           no  0
-162  boxrh27     tree martin           789   2016  boxrh272016           no  0
-163  boxrh28     tree martin           767   2016  boxrh282016           no  0
-164  boxrh31     tree martin           718   2016  boxrh312016           no  0
-165  boxrh35     tree martin           754   2016  boxrh352016           no  0
-166  boxrh39     tree martin           835   2016  boxrh392016           no  0
-167  boxrh40     tree martin           710   2016  boxrh402016           no  0
-168  boxrh41     tree martin           727   2016  boxrh412016           no  0
-169  boxrh42     tree martin           731   2016  boxrh422016           no  0
-170  boxrh43     tree martin           704   2016  boxrh432016           no  0
-171  boxrh44     tree martin           758   2016  boxrh442016           no  0
-172  boxrh45     tree martin           763   2016  boxrh452016           no  0
-173  boxrh46     tree martin           740   2016  boxrh462016           no  0
-174  boxrh48     tree martin            29   2016  boxrh482016           no  0
-175  boxrh50     tree martin            14   2016  boxrh502016           no  0
-176  boxrh51     tree martin            14   2016  boxrh512016           no  0
-177  boxrh52     tree martin            16   2016  boxrh522016           no  0
-178  boxrh53     tree martin             7   2016  boxrh532016           no  0
-179  boxrh54     tree martin            66   2016  boxrh542016           no  0
-180  boxrh61     tree martin           135   2016  boxrh612016           no  0
-181  boxrh69     tree martin           115   2016  boxrh692016           no  0
-182  boxrh70     tree martin           135   2016  boxrh702016           no  0
-183  boxrh77     tree martin            89   2016  boxrh772016           no  0
-184  boxrh91     tree martin           141   2016  boxrh912016           no  0
-185  boxrh01     tree martin           820   2019  boxrh012019           no  0
-186  boxrh02     tree martin           866   2019  boxrh022019           no  0
-187  boxrh04     tree martin           808   2019  boxrh042019           no  0
-188  boxrh07     tree martin           779   2019  boxrh072019           no  0
-189  boxrh08     tree martin           762   2019  boxrh082019           no  0
-190  boxrh09     tree martin           735   2019  boxrh092019           no  0
-191  boxrh10     tree martin           730   2019  boxrh102019           no  0
-192 boxrh120     tree martin           377   2019 boxrh1202019           no  0
-193  boxrh12     tree martin           697   2019  boxrh122019           no  0
-194 boxrh139     tree martin           400   2019 boxrh1392019           no  0
-195  boxrh14     tree martin           806   2019  boxrh142019           no  0
-196  boxrh15     tree martin           688   2019  boxrh152019           no  0
-197  boxrh16     tree martin           782   2019  boxrh162019           no  0
-198  boxrh21     tree martin           841   2019  boxrh212019           no  0
-199  boxrh22     tree martin          1072   2019  boxrh222019           no  0
-200  boxrh23     tree martin           802   2019  boxrh232019           no  0
-201  boxrh24     tree martin           839   2019  boxrh242019           no  0
-202  boxrh25     tree martin           825   2019  boxrh252019           no  0
-203  boxrh26     tree martin           743   2019  boxrh262019           no  0
-204  boxrh27     tree martin           789   2019  boxrh272019           no  0
-205  boxrh28     tree martin           767   2019  boxrh282019           no  0
-206  boxrh29     tree martin           705   2019  boxrh292019           no  0
-207  boxrh31     tree martin           718   2019  boxrh312019           no  0
-208  boxrh32     tree martin           735   2019  boxrh322019           no  0
-209  boxrh33     tree martin           745   2019  boxrh332019           no  0
-210  boxrh34     tree martin           732   2019  boxrh342019           no  0
-211  boxrh35     tree martin           754   2019  boxrh352019           no  0
-212  boxrh36     tree martin           778   2019  boxrh362019           no  0
-213  boxrh37     tree martin           946   2019  boxrh372019           no  0
-214  boxrh39     tree martin           835   2019  boxrh392019           no  0
-215  boxrh40     tree martin           710   2019  boxrh402019           no  0
-216  boxrh41     tree martin           727   2019  boxrh412019           no  0
-217  boxrh43     tree martin           704   2019  boxrh432019           no  0
-218  boxrh44     tree martin           758   2019  boxrh442019           no  0
-219  boxrh45     tree martin           763   2019  boxrh452019           no  0
-220  boxrh46     tree martin           740   2019  boxrh462019           no  0
-221 boxrh128     tree martin           544   2019 boxrh1282019          yes  0
-222 boxrh129     tree martin           577   2019 boxrh1292019          yes  0
-223 boxrh135     tree martin           270   2019 boxrh1352019          yes  0
-224  boxrh17     tree martin           695   2019  boxrh172019          yes  0
-225  boxrh42     tree martin           731   2019  boxrh422019          yes  0
-226  boxrh54     tree martin            66   2019  boxrh542019          yes  0
-227  boxrh77     tree martin            89   2019  boxrh772019          yes  0
-    cs e tm
-1    1 0  0
-2    1 0  0
-3    1 0  0
-4    1 0  0
-5    1 0  0
-6    1 0  0
-7    1 0  0
-8    1 0  0
-9    1 0  0
-10   1 0  0
-11   1 0  0
-12   1 0  0
-13   1 0  0
-14   1 0  0
-15   1 0  0
-16   1 0  0
-17   1 0  0
-18   1 0  0
-19   1 0  0
-20   1 0  0
-21   1 0  0
-22   1 0  0
-23   1 0  0
-24   1 0  0
-25   1 0  0
-26   1 0  0
-27   1 0  0
-28   1 0  0
-29   1 0  0
-30   1 0  0
-31   1 0  0
-32   1 0  0
-33   1 0  0
-34   1 0  0
-35   1 0  0
-36   1 0  0
-37   1 0  0
-38   1 0  0
-39   1 0  0
-40   1 0  0
-41   1 0  0
-42   1 0  0
-43   1 0  0
-44   1 0  0
-45   1 0  0
-46   1 0  0
-47   1 0  0
-48   1 0  0
-49   1 0  0
-50   1 0  0
-51   1 0  0
-52   1 0  0
-53   1 0  0
-54   1 0  0
-55   1 0  0
-56   1 0  0
-57   1 0  0
-58   1 0  0
-59   1 0  0
-60   1 0  0
-61   1 0  0
-62   1 0  0
-63   1 0  0
-64   1 0  0
-65   1 0  0
-66   1 0  0
-67   0 1  0
-68   0 1  0
-69   0 1  0
-70   0 1  0
-71   0 1  0
-72   0 1  0
-73   0 1  0
-74   0 1  0
-75   0 1  0
-76   0 1  0
-77   0 1  0
-78   0 1  0
-79   0 0  0
-80   0 0  0
-81   0 0  0
-82   0 0  0
-83   0 0  0
-84   0 0  0
-85   0 0  0
-86   0 0  0
-87   0 0  0
-88   0 0  0
-89   0 0  0
-90   0 0  0
-91   0 0  0
-92   0 0  0
-93   0 0  0
-94   0 0  0
-95   0 0  0
-96   0 0  0
-97   0 0  0
-98   0 0  0
-99   0 0  0
-100  0 0  0
-101  0 0  0
-102  0 0  0
-103  0 0  0
-104  0 0  0
-105  0 0  0
-106  0 0  0
-107  0 0  0
-108  0 0  0
-109  0 0  0
-110  0 0  0
-111  0 0  0
-112  0 0  0
-113  0 0  0
-114  0 0  0
-115  0 0  0
-116  0 0  0
-117  0 0  0
-118  0 0  0
-119  0 0  0
-120  0 0  0
-121  0 0  0
-122  0 0  0
-123  0 0  0
-124  0 0  0
-125  0 0  0
-126  0 0  0
-127  0 0  0
-128  0 0  1
-129  0 0  1
-130  0 0  1
-131  0 0  1
-132  0 0  1
-133  0 0  1
-134  0 0  1
-135  0 0  1
-136  0 0  1
-137  0 0  1
-138  0 0  1
-139  0 0  1
-140  0 0  1
-141  0 0  1
-142  0 0  1
-143  0 0  1
-144  0 0  1
-145  0 0  1
-146  0 0  1
-147  0 0  1
-148  0 0  1
-149  0 0  1
-150  0 0  1
-151  0 0  1
-152  0 0  1
-153  0 0  1
-154  0 0  1
-155  0 0  1
-156  0 0  1
-157  0 0  1
-158  0 0  1
-159  0 0  1
-160  0 0  1
-161  0 0  1
-162  0 0  1
-163  0 0  1
-164  0 0  1
-165  0 0  1
-166  0 0  1
-167  0 0  1
-168  0 0  1
-169  0 0  1
-170  0 0  1
-171  0 0  1
-172  0 0  1
-173  0 0  1
-174  0 0  1
-175  0 0  1
-176  0 0  1
-177  0 0  1
-178  0 0  1
-179  0 0  1
-180  0 0  1
-181  0 0  1
-182  0 0  1
-183  0 0  1
-184  0 0  1
-185  0 0  1
-186  0 0  1
-187  0 0  1
-188  0 0  1
-189  0 0  1
-190  0 0  1
-191  0 0  1
-192  0 0  1
-193  0 0  1
-194  0 0  1
-195  0 0  1
-196  0 0  1
-197  0 0  1
-198  0 0  1
-199  0 0  1
-200  0 0  1
-201  0 0  1
-202  0 0  1
-203  0 0  1
-204  0 0  1
-205  0 0  1
-206  0 0  1
-207  0 0  1
-208  0 0  1
-209  0 0  1
-210  0 0  1
-211  0 0  1
-212  0 0  1
-213  0 0  1
-214  0 0  1
-215  0 0  1
-216  0 0  1
-217  0 0  1
-218  0 0  1
-219  0 0  1
-220  0 0  1
-221  0 0  1
-222  0 0  1
-223  0 0  1
-224  0 0  1
-225  0 0  1
-226  0 0  1
-227  0 0  1</code></pre>
-</div>
-</div>
 <section id="a.-response-variable" class="level3">
 <h3 class="anchored" data-anchor-id="a.-response-variable">a. Response variable</h3>
 <p>For each category of bird, a 1 represents that the nest box is occupied by that type of bird and the 0 represents that it is not occupied by that type of bird or is empty. The response variables include, Swift Parrot, Common Starling, and Tree Martin.</p>
@@ -769,16 +311,172 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
-<section id="e." class="level3">
-<h3 class="anchored" data-anchor-id="e.">e.</h3>
+<section id="e.-run-the-models" class="level3">
+<h3 class="anchored" data-anchor-id="e.-run-the-models">e. Run the models</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> nest_boxes)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge.distance <span class="sc">+</span> season, </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> season,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge.distance,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> nest_boxes)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge.distance <span class="sc">+</span> season, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> season,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge.distance,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="f.-check-the-diagnostics" class="level3">
+<h3 class="anchored" data-anchor-id="f.-check-the-diagnostics">f.&nbsp;Check the diagnostics</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-8.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-9.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-10.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-11.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-5-12.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="g.-select-the-best-model" class="level3">
+<h3 class="anchored" data-anchor-id="g.-select-the-best-model">g. Select the best model</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AICc</span>(model1,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>     model2,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>     model3) <span class="sc">|&gt;</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(AICc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       df     AICc
+model1  4 232.5485
+model3  3 235.9030
+model2  3 242.5425</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sp ~ edge.distance + season, data = nest_boxes)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.42487 -0.25250 -0.17317 -0.03858  0.95492 
+
+Coefficients:
+                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    8.371e+01  3.580e+01   2.338 0.020269 *  
+edge.distance -3.251e-04  9.297e-05  -3.497 0.000567 ***
+season        -4.131e-02  1.774e-02  -2.328 0.020801 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3993 on 224 degrees of freedom
+Multiple R-squared:  0.07056,   Adjusted R-squared:  0.06226 
+F-statistic: 8.503 on 2 and 224 DF,  p-value: 0.0002759</code></pre>
+</div>
+</div>
+<p>The best model that predicts Swift Parrot presence in nest boxes as determined by Akaike’s Information Criterion (AIC) includes season and distance to the forest edge (F(2, 224) = 8.5, p &lt; 0.001, <span class="math inline">\(\alpha\)</span> = 0.05)</p>
+</section>
+<section id="h.-visualize-the-model-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="h.-visualize-the-model-predictions">h. Visualize the model predictions</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpredict</span>(model1,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"edge.distance"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"season"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"pink"</span>, <span class="st">"green"</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">show_data =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Swift Parrot"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Distance from the forest edge (m)"</span>,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Probability of box occupancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Data points may overlap. Use the `jitter` argument to add some amount of
+  random variation to the location of data points and avoid overplotting.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 </section>

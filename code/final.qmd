@@ -21,6 +21,8 @@ library(ggplot2)
 library(janitor)
 library(MuMIn)
 library(ggeffects)
+library(flextable)
+library(gtsummary)
 sst <- read.csv("data/SST_update2023.csv")
 nest_boxes <- read.csv("data/occdist.csv")
 ```
@@ -80,10 +82,15 @@ ggplot(sst_clean, aes(x = month,
 ```
 
 # Problem 3. Data analysis
+```{r}
+nest_boxes_clean <- nest_boxes |> 
+  clean_names() |> 
+  mutate(season = as_factor(season))
+```
 
 ### a. Response variable
 
-For each category of bird, a 1 represents that the nest box is occupied by that type of bird and the 0 represents that it is not occupied by that type of bird or is empty. The response variables include, Swift Parrot, Common Starling, and Tree Martin.
+The response variable is sp, which stands for Swift Parrot. A 1 represents that the nest box is occupied by a Swift Parrot and the 0 represents that it is not occupied by that type of bird or is empty. 
 
 ### b. Purpose of study
 
@@ -105,13 +112,13 @@ The study compares two different breeding seasons for Swift Parrots, one in 2016
 ### e. Run the models
 
 ```{r}
-model0 <- lm(sp ~ 1, data = nest_boxes)
-model1 <- lm(sp ~ edge.distance + season, 
-             data = nest_boxes)
+model0 <- lm(sp ~ 1, data = nest_boxes_clean)
+model1 <- lm(sp ~ edge_distance + season, 
+             data = nest_boxes_clean)
 model2 <- lm(sp ~ season,
-             data = nest_boxes)
-model3 <- lm(sp ~ edge.distance,
-             data = nest_boxes)
+             data = nest_boxes_clean)
+model3 <- lm(sp ~ edge_distance,
+             data = nest_boxes_clean)
 ```
 
 ### f. Check the diagnostics
@@ -137,15 +144,25 @@ The best model that predicts Swift Parrot presence in nest boxes as determined b
 
 ```{r}
 ggpredict(model1,
-          terms = c("edge.distance",
+          terms = c("edge_distance",
                     "season")) |> 
   plot(colors = c("pink", "green"),
        show_data = TRUE) +
   theme_classic() +
   labs(title = "Swift Parrot",
        x = "Distance from the forest edge (m)",
-       y = "Probability of box occupancy")
+       y = "Probability of box occupancy") |> 
+  ggeffects::ggpredict()
   
 ```
+
+### i. Write a caption for your figure
+
+### j. Calculate model predictions
+
+```{r}
+ggeffects::ggpredict(model1, terms = c("edge_distance [0, 900]", "season"))
+```
+ 
 
 
