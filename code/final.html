@@ -238,11 +238,11 @@ window.Quarto = {
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(sst_clean, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  year month mean_monthly_sst
-1 2020   Jan         14.56389
-2 2021   Jan         13.90625
-3 2022   Aug         17.47701
-4 2020   Jun         15.91993
-5 2023   Jun         15.97853</code></pre>
+1 2021   Jan         13.90625
+2 2018   Mar         13.45859
+3 2020   Nov         15.52718
+4 2023   Oct         17.43968
+5 2018   Feb         14.30359</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># showing structure of data</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -494,6 +494,12 @@ edge_distance | Predicted |     95% CI
 <h1>Problem 4. Affective and exploratory visualizations</h1>
 <section id="a.-comparing-visualizations" class="level3">
 <h3 class="anchored" data-anchor-id="a.-comparing-visualizations">a. Comparing visualizations</h3>
+<ol type="1">
+<li><p>My visualization in homework 2 was a box plot to help show my median walking pace for each category of shoe that I wore (docs, sneakers), which helped show the general trend that docs resulted in a slower walking speed. However, my affective visualization did not show any central tendencies of my data and just used different shoe drawings to represent each walking pace observation and the type of shoe that I was wearing. Since the affective visualization did not depict any summary statistics of the dataset, the relationship between shoe type and walking pace is less clear.</p></li>
+<li><p>Both the box plot and my affective visualization show that the observations of walking pace in docs tended to be slower than those in sneakers. Both visualizations represent a clear distinction between the data for each category of shoe.</p></li>
+<li><p>The affective visualization better demonstrates my shoe wearing habits (more likely to wear sneakers), since it shows the type of shoe I was wearing when each data point was recorded. Whereas, the exploratory visualization does a better job at depicting the relationship between walking pace and shoe type because the medians in walking pace between the shoe types are more clearly depicted by the box plots.</p></li>
+<li><p>In week 9, it was recommended that I add a label to the x-axis to make it more clear that the data being represented was walking pace in min/mile and a legend to explain how shoe types are represented. I implemented both of these suggestions by adding a written label to the x-axis, creating better drawings of the shoes, and making a legend to show the two shoe types (sneaker, doc). I think that these were all good suggestions to help make the depiction more clear and understandable to the viewer just by looking at the visualization.</p></li>
+</ol>
 </section>
 </section>
 
