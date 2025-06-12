@@ -132,8 +132,9 @@ window.Quarto = {
   <li><a href="#f.-check-the-diagnostics" id="toc-f.-check-the-diagnostics" class="nav-link" data-scroll-target="#f.-check-the-diagnostics">f.&nbsp;Check the diagnostics</a></li>
   <li><a href="#g.-select-the-best-model" id="toc-g.-select-the-best-model" class="nav-link" data-scroll-target="#g.-select-the-best-model">g. Select the best model</a></li>
   <li><a href="#h.-visualize-the-model-predictions" id="toc-h.-visualize-the-model-predictions" class="nav-link" data-scroll-target="#h.-visualize-the-model-predictions">h. Visualize the model predictions</a></li>
-  <li><a href="#i.-write-a-caption-for-your-figure" id="toc-i.-write-a-caption-for-your-figure" class="nav-link" data-scroll-target="#i.-write-a-caption-for-your-figure">i. Write a caption for your figure</a></li>
+  <li><a href="#i.-figure-caption" id="toc-i.-figure-caption" class="nav-link" data-scroll-target="#i.-figure-caption">i. Figure Caption</a></li>
   <li><a href="#j.-calculate-model-predictions" id="toc-j.-calculate-model-predictions" class="nav-link" data-scroll-target="#j.-calculate-model-predictions">j. Calculate model predictions</a></li>
+  <li><a href="#k.-interpret-results" id="toc-k.-interpret-results" class="nav-link" data-scroll-target="#k.-interpret-results">k. Interpret results</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -187,10 +188,11 @@ window.Quarto = {
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flextable)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/SST_update2023.csv"</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>nest_boxes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/occdist.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># reading in data</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/SST_update2023.csv"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>nest_boxes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/occdist.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="problem-1.-research-writing" class="level1">
@@ -232,11 +234,11 @@ window.Quarto = {
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">slice_sample</span>(sst_clean, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  year month mean_monthly_sst
-1 2019   Feb         14.09430
-2 2018   May         13.61440
-3 2020   Oct         18.98581
-4 2023   Feb         13.04096
-5 2023   Jul         16.32913</code></pre>
+1 2023   May         14.32968
+2 2021   Apr         13.07302
+3 2023   Jun         15.97853
+4 2020   Oct         18.98581
+5 2021   Oct         16.57246</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># showing structure of data</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sst_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -286,11 +288,6 @@ window.Quarto = {
 </section>
 <section id="problem-3.-data-analysis" class="level1">
 <h1>Problem 3. Data analysis</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nest_boxes_clean <span class="ot">&lt;-</span> nest_boxes <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">season =</span> <span class="fu">as_factor</span>(season))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <section id="a.-response-variable" class="level3">
 <h3 class="anchored" data-anchor-id="a.-response-variable">a. Response variable</h3>
 <p>The response variable is sp, which stands for Swift Parrot. A 1 represents that the nest box is occupied by a Swift Parrot and the 0 represents that it is not occupied by that type of bird or is empty.</p>
@@ -345,20 +342,32 @@ window.Quarto = {
 <section id="e.-run-the-models" class="level3">
 <h3 class="anchored" data-anchor-id="e.-run-the-models">e. Run the models</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> nest_boxes_clean)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge_distance <span class="sc">+</span> season, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes_clean)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> season,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes_clean)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sp <span class="sc">~</span> edge_distance,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model 0: null model</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> nest_boxes_clean,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># model 1: all predictors (saturated)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> edge_distance <span class="sc">+</span> season, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes_clean,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># model 2: season</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> season,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes_clean,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># model 3: distnace to forest edge</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(sp <span class="sc">~</span> edge_distance,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> nest_boxes_clean,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">family =</span> <span class="st">"binomial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="f.-check-the-diagnostics" class="level3">
 <h3 class="anchored" data-anchor-id="f.-check-the-diagnostics">f.&nbsp;Check the diagnostics</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for model 1</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -366,12 +375,20 @@ window.Quarto = {
 </figure>
 </div>
 </div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for model 2</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="final_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for model 3</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">simulateResiduals</span>(model3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
+: Fitting terminated with step failure - check results carefully</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -380,165 +397,99 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-5.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-6.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-7.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-8.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-9.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-10.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-11.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-6-12.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 </section>
 <section id="g.-select-the-best-model" class="level3">
 <h3 class="anchored" data-anchor-id="g.-select-the-best-model">g. Select the best model</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AICc</span>(model1,</span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AICc</span>(model1, <span class="co"># best model: season and edge_distance</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>     model2,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>     model3) <span class="sc">|&gt;</span> </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(AICc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arranging output in descending order of AIC</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(AICc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       df     AICc
-model1  4 232.5485
-model3  3 235.9030
-model2  3 242.5425</code></pre>
+model1  3 226.3133
+model3  2 229.6716
+model2  2 236.3744</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary of model 1</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = sp ~ edge_distance + season, data = nest_boxes_clean)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--0.42487 -0.25250 -0.17317 -0.03858  0.95492 
+glm(formula = sp ~ edge_distance + season, family = "binomial", 
+    data = nest_boxes_clean)
 
 Coefficients:
-                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    4.271e-01  5.772e-02   7.401 2.71e-12 ***
-edge_distance -3.251e-04  9.297e-05  -3.497 0.000567 ***
-season2019    -1.239e-01  5.323e-02  -2.328 0.020801 *  
+                Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)   -0.0774902  0.3293209  -0.235 0.813974    
+edge_distance -0.0020782  0.0006226  -3.338 0.000843 ***
+season2019    -0.7791985  0.3390296  -2.298 0.021544 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.3993 on 224 degrees of freedom
-Multiple R-squared:  0.07056,   Adjusted R-squared:  0.06226 
-F-statistic: 8.503 on 2 and 224 DF,  p-value: 0.0002759</code></pre>
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 236.81  on 226  degrees of freedom
+Residual deviance: 220.21  on 224  degrees of freedom
+AIC: 226.21
+
+Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
-<p>The best model that predicts Swift Parrot presence in nest boxes as determined by Akaike’s Information Criterion (AIC) includes season and distance to the forest edge (F(2, 224) = 8.5, p &lt; 0.001, <span class="math inline">\(\alpha\)</span> = 0.05)</p>
+<p>The best model that predicts Swift Parrot presence in nest boxes as determined by Akaike’s Information Criterion (AIC) includes season and distance to the forest edge.</p>
 </section>
 <section id="h.-visualize-the-model-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="h.-visualize-the-model-predictions">h. Visualize the model predictions</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpredict</span>(model1,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"edge_distance"</span>,</span>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mod_pre <span class="ot">&lt;-</span> <span class="fu">ggpredict</span>(model1, <span class="co"># model object</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"edge_distance [all]"</span>, <span class="co"># predictors</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"season"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"pink"</span>, <span class="st">"green"</span>),</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">show_data =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Swift Parrot"</span>,</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Distance from the forest edge (m)"</span>,</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Probability of box occupancy"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  ggeffects<span class="sc">::</span><span class="fu">ggpredict</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># setting custom colors</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"pink"</span>, <span class="st">"green"</span>),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">show_data =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># cahnging the theme</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># changing the title and axis labels</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Swift Parrot"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Distance from the forest edge (m)"</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Probability of box occupancy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Data points may overlap. Use the `jitter` argument to add some amount of
   random variation to the location of data points and avoid overplotting.</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Could not access model information.</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 </section>
-<section id="i.-write-a-caption-for-your-figure" class="level3">
-<h3 class="anchored" data-anchor-id="i.-write-a-caption-for-your-figure">i. Write a caption for your figure</h3>
+<section id="i.-figure-caption" class="level3">
+<h3 class="anchored" data-anchor-id="i.-figure-caption">i. Figure Caption</h3>
+<p><strong>Figure 1. Swift Parrot nest box occupancy tends to be higher closer to the forest and in the breeding season of 2016.</strong> Points represent observations of nest box occupancy for Swift Parrots (n = 227). Lines represent model predictions (generalized linear regression) for the occupancy of a nest box by a Swift Parrot as predicted by distance from the forest edge (m) and breeding season, which is represented by color (pink: 2016, green: 2019). The ribbon around the lines represent a 95% confidence interval. Data source: Stojanovic, Dejan et al.&nbsp;(2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird [Dataset]. <em>Dryad</em>. <a href="https://doi.org/10.5061/dryad.83bk3j9sb" class="uri">https://doi.org/10.5061/dryad.83bk3j9sb</a>. Accessed June 2025.</p>
 </section>
 <section id="j.-calculate-model-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="j.-calculate-model-predictions">j. Calculate model predictions</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ggeffects<span class="sc">::</span><span class="fu">ggpredict</span>(model1, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"edge_distance [0, 900]"</span>, <span class="st">"season"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ggeffects<span class="sc">::</span><span class="fu">ggpredict</span>(model1, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"edge_distance [0, 900]"</span>, <span class="st">"season"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># Predicted values of sp
+<pre><code># Predicted probabilities of sp
 
 season: 2016
 
 edge_distance | Predicted |     95% CI
 --------------------------------------
-            0 |      0.43 | 0.31, 0.54
-          900 |      0.13 | 0.02, 0.25
+            0 |      0.48 | 0.33, 0.64
+          900 |      0.12 | 0.06, 0.24
 
 season: 2019
 
-edge_distance | Predicted |      95% CI
----------------------------------------
-            0 |      0.30 |  0.20, 0.41
-          900 |      0.01 | -0.10, 0.12</code></pre>
+edge_distance | Predicted |     95% CI
+--------------------------------------
+            0 |      0.30 | 0.18, 0.44
+          900 |      0.06 | 0.03, 0.13</code></pre>
 </div>
 </div>
+</section>
+<section id="k.-interpret-results" class="level3">
+<h3 class="anchored" data-anchor-id="k.-interpret-results">k. Interpret results</h3>
 </section>
 </section>
 

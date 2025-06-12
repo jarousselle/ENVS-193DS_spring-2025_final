@@ -26,6 +26,7 @@ library(MuMIn)
 library(ggeffects)
 library(flextable)
 library(gtsummary)
+library(DHARMa)
 
 # reading in data
 sst <- read.csv("data/SST_update2023.csv")
@@ -104,7 +105,9 @@ ggplot(sst_clean, aes(x = month,
 ```
 
 # Problem 3. Data analysis
+
 ```{r}
+#| include: false
 nest_boxes_clean <- nest_boxes |> 
   clean_names() |> 
   mutate(season = as_factor(season))
@@ -112,7 +115,7 @@ nest_boxes_clean <- nest_boxes |>
 
 ### a. Response variable
 
-The response variable is sp, which stands for Swift Parrot. A 1 represents that the nest box is occupied by a Swift Parrot and the 0 represents that it is not occupied by that type of bird or is empty. 
+The response variable is sp, which stands for Swift Parrot. A 1 represents that the nest box is occupied by a Swift Parrot and the 0 represents that it is not occupied by that type of bird or is empty.
 
 ### b. Purpose of study
 
@@ -134,57 +137,78 @@ The study compares two different breeding seasons for Swift Parrots, one in 2016
 ### e. Run the models
 
 ```{r}
-model0 <- lm(sp ~ 1, data = nest_boxes_clean)
-model1 <- lm(sp ~ edge_distance + season, 
-             data = nest_boxes_clean)
-model2 <- lm(sp ~ season,
-             data = nest_boxes_clean)
-model3 <- lm(sp ~ edge_distance,
-             data = nest_boxes_clean)
+# model 0: null model
+model0 <- glm(sp ~ 1, data = nest_boxes_clean,
+              family = "binomial")
+
+# model 1: all predictors (saturated)
+model1 <- glm(sp ~ edge_distance + season, 
+             data = nest_boxes_clean,
+             family = "binomial")
+
+# model 2: season
+model2 <- glm(sp ~ season,
+             data = nest_boxes_clean,
+             family = "binomial")
+
+# model 3: distnace to forest edge
+model3 <- glm(sp ~ edge_distance,
+             data = nest_boxes_clean,
+             family = "binomial")
 ```
 
 ### f. Check the diagnostics
+
 ```{r}
 par(mfrow = c(1,1))
-plot(model1)
-plot(model2)
-plot(model3)
+# plot for model 1
+plot(simulateResiduals(model1))
+# plot for model 2
+plot(simulateResiduals(model2))
+# plot for model 3
+plot(simulateResiduals(model3))
 ```
 
 ### g. Select the best model
+
 ```{r}
-AICc(model1,
+AICc(model1, # best model: season and edge_distance
      model2,
      model3) |> 
+  # arranging output in descending order of AIC
   arrange(AICc)
+# summary of model 1
 summary(model1)
 ```
 
-The best model that predicts Swift Parrot presence in nest boxes as determined by Akaike's Information Criterion (AIC) includes season and distance to the forest edge (F(2, 224) = 8.5, p < 0.001, $\alpha$ = 0.05)
+The best model that predicts Swift Parrot presence in nest boxes as determined by Akaike's Information Criterion (AIC) includes season and distance to the forest edge.
 
 ### h. Visualize the model predictions
 
 ```{r}
-ggpredict(model1,
-          terms = c("edge_distance",
+mod_pre <- ggpredict(model1, # model object
+          terms = c("edge_distance [all]", # predictors
                     "season")) |> 
+  # setting custom colors
   plot(colors = c("pink", "green"),
        show_data = TRUE) +
+  # cahnging the theme
   theme_classic() +
+  # changing the title and axis labels
   labs(title = "Swift Parrot",
        x = "Distance from the forest edge (m)",
-       y = "Probability of box occupancy") |> 
-  ggeffects::ggpredict()
-  
+       y = "Probability of box occupancy")
 ```
 
-### i. Write a caption for your figure
+### i. Figure Caption
+
+**Figure 1. Swift Parrot nest box occupancy tends to be higher closer to the forest and in the breeding season of 2016.** Points represent observations of nest box occupancy for Swift Parrots (n = 227). Lines represent model predictions (generalized linear regression) for the occupancy of a nest box by a Swift Parrot as predicted by distance from the forest edge (m) and breeding season, which is represented by color (pink: 2016, green: 2019). The ribbon around the lines represent a 95% confidence interval. Data source: Stojanovic, Dejan et al. (2021). Do nest boxes breed the target species or its competitors? A case study of a critically endangered bird \[Dataset\]. *Dryad*. <https://doi.org/10.5061/dryad.83bk3j9sb>. Accessed June 2025.
 
 ### j. Calculate model predictions
 
 ```{r}
 print(ggeffects::ggpredict(model1, terms = c("edge_distance [0, 900]", "season")))
 ```
- 
 
+### k. Interpret results
 
