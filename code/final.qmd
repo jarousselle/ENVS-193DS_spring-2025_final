@@ -54,6 +54,8 @@ Part 2: We found a (large/medium/small) difference ($\eta^2$ = effect size) betw
 ### a. Cleaning and summarizing
 
 ```{r}
+#| message: false
+#| warning: false
 # creating a clean data frame
 sst_clean <- sst |>  # starting with sst object
   # making a column to list the year
@@ -137,6 +139,8 @@ The study compares two different breeding seasons for Swift Parrots, one in 2016
 ### e. Run the models
 
 ```{r}
+#| message: false
+#| warning: false
 # model 0: null model
 model0 <- glm(sp ~ 1, data = nest_boxes_clean,
               family = "binomial")
@@ -160,6 +164,8 @@ model3 <- glm(sp ~ edge_distance,
 ### f. Check the diagnostics
 
 ```{r}
+#| message: false
+#| warning: false
 par(mfrow = c(1,1))
 # plot for model 1
 plot(simulateResiduals(model1))
@@ -172,6 +178,8 @@ plot(simulateResiduals(model3))
 ### g. Select the best model
 
 ```{r}
+#| message: false
+#| warning: false
 AICc(model1, # best model: season and edge_distance
      model2,
      model3) |> 
@@ -186,6 +194,8 @@ The best model that predicts Swift Parrot presence in nest boxes as determined b
 ### h. Visualize the model predictions
 
 ```{r}
+#| message: false
+#| warning: false
 mod_pre <- ggpredict(model1, # model object
           terms = c("edge_distance [all]", # predictors
                     "season")) |> 
@@ -207,8 +217,19 @@ mod_pre <- ggpredict(model1, # model object
 ### j. Calculate model predictions
 
 ```{r}
+#| message: false
+#| warning: false
+# model predictions for distance 0 and 900 for both seasons
 print(ggeffects::ggpredict(model1, terms = c("edge_distance [0, 900]", "season")))
 ```
 
 ### k. Interpret results
+
+Swift Parrots tend to occupy nest boxes more often when the box is placed closer to the edge of the forest and the overall probability of occupancy is higher in the 2016 breeding season than the 2019 breeding season. In the 2016 breeding season, the probability of a Swift Parrot occupying a nest box 0 m away from the edge of the forest is 0.48 (95% CI: [0.33, 0.64]) and the probability of a Swift Parrot occupying a nest box 900 m away from the edge of the forest is 0.12 (95% CI: [0.06, 0.24]). In the 2019 breeding season, the probability of a Swift Parrot occupying a nest box 0 m away from the edge of the forest is 0.30 (95% CI: [0.18, 0.44]) and the probability of a Swift Parrot occupying a nest box 900 m away from the edge of the forest is 0.06 (95% CI: [0.03, 0.13]). Swift Parrots are more likely to occupy boxes closer to the forest's edge because these boxes are easier for them to find.
+
+# Problem 4. Affective and exploratory visualizations 
+
+### a. Comparing visualizations
+
+
 
