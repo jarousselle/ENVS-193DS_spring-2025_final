@@ -7,14 +7,17 @@ format:
     toc: true # use this to display a table of contents
 ---
 
-<https://github.com/jarousselle/ENVS-193DS_spring-2025_final>
+GitHub repo: <https://github.com/jarousselle/ENVS-193DS_spring-2025_final>
 
 # Setup
 
 ```{r}
 #| message: false
 #| warning: false
+# setting working directory
 setwd("/Users/jessrousselle/Desktop/github/ENVS-193DS_spring-2025_final")
+
+# reading in packages
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
@@ -23,6 +26,8 @@ library(MuMIn)
 library(ggeffects)
 library(flextable)
 library(gtsummary)
+
+# reading in data
 sst <- read.csv("data/SST_update2023.csv")
 nest_boxes <- read.csv("data/occdist.csv")
 ```
@@ -39,23 +44,32 @@ My co-worker should also include the results of a Tukey HSD test because this wi
 
 ### c. Suggestions for rewriting
 
-part 1: The annual total nitrogen load (increased/decreased) as distance from headwater increased (linear regression, F~Degrees of Freedom~ = test statistic, R^2^ = model fit, p = 0.03).
+Part 1: The average annual nitrogen load (increased/decreased) as distance from headwater increased (linear regression, F~Degrees of Freedom~ = test statistic, R^2^ = model fit, p = 0.03).
 
-part 2: We found a (large/medium/small) difference ($\eta^2$ = effect size) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) in mean nitrogen load (kg year-1) (one-way ANOVA, F(degrees of freedom) = test statistic, p = 0.02, $\alpha$ = significance level). On average, (source type) tended to have (higher/lower) nitrogen load than (source type) (results from Tukey HSD: average difference in nitrogen load, 95% CI)...(more comparisons between groups can be added based off of Tukey HSD test.)
+Part 2: We found a (large/medium/small) difference ($\eta^2$ = effect size) between sources (urban land, atmospheric deposition, fertilizer, wastewater treatment, and grasslands) in mean nitrogen load (kg year-1) (one-way ANOVA, F(degrees of freedom) = test statistic, p = 0.02, $\alpha$ = significance level). On average, (source type) tended to have (higher/lower) nitrogen load than (source type) (results from Tukey HSD: average difference in nitrogen load, 95% CI)...(more comparisons between groups can be added based off of Tukey HSD test.)
 
 # Problem 2. Data visualization
 
 ### a. Cleaning and summarizing
 
 ```{r}
-sst_clean <- sst |> 
-  mutate(year = year(date)) |> 
+# creating a clean data frame
+sst_clean <- sst |>  # starting with sst object
+  # making a column to list the year
+  mutate(year = year(date)) |>  
+  # filtering to only show years 2018-2023
   filter(year == 2018 | year == 2019 | year == 2020 | year == 2021 | year == 2022 | year == 2023) |> 
+  # creating a column with the month name
  mutate(month = month(date, label = TRUE))
+# making the year data a factor
 sst_clean$year <- factor(sst_clean$year)
+# calculating mean temp for each month each year
 sst_clean <- aggregate(temp ~ year + month, data = sst_clean, FUN = mean)
+# changing column names
 colnames(sst_clean) <- c("year", "month", "mean_monthly_sst")
+# displaying 5 rows of data from sst_clean
 slice_sample(sst_clean, n = 5)
+# showing structure of data
 str(sst_clean)
 ```
 
@@ -64,18 +78,26 @@ str(sst_clean)
 ```{r}
 #| message: false
 #| warning: false
-ggplot(sst_clean, aes(x = month,
-                      y = mean_monthly_sst,
+# creating visual of data
+
+# base layer using sst_clean data
+ggplot(sst_clean, aes(x = month, 
+                      y = mean_monthly_sst, 
                       group = year,
                       color = year)) +
+  # setting custom colors
   scale_color_manual(values = c("#c9e6d9", "#aae6a1", "#5baa6f", "#2e8b37", "#1b773b", "#255c3f")) +
+  # adding lines
   geom_line() +
+  # adding data points
   geom_point() +
+  #adjusting theme elements to add border and remove background
   theme(panel.border=element_rect(linetype=1,fill=NA),
         panel.background = element_blank(), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         legend.position = c(0.1, 0.75)) +
+  # changing axis labels and legend title
   labs(x = "Month",
        y = "Mean monthly sea surface temperature (°C)",
        color = "Year")
@@ -161,7 +183,7 @@ ggpredict(model1,
 ### j. Calculate model predictions
 
 ```{r}
-ggeffects::ggpredict(model1, terms = c("edge_distance [0, 900]", "season"))
+print(ggeffects::ggpredict(model1, terms = c("edge_distance [0, 900]", "season")))
 ```
  
 
